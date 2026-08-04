@@ -1,0 +1,16 @@
+{
+  "watch": ".",
+  "post_urls": [
+    "http://localhost:8000/api/upload",
+    "https://internal.vpn-only.example.com/api/upload"
+  ],
+  "timeout_ms": 10000,
+  "debounce_ms": 200,
+  "headers": {
+    "Csrf-token": "nocheck"
+  },
+  "ignore": [
+    "**/node_modules/**",
+    "**/.git/**"
+  ]
+}

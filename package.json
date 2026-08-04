@@ -1,0 +1,24 @@
+{
+  "name": "postjson-watch",
+  "version": "1.0.0",
+  "description": "Watch a directory tree and POST .json files as their raw contents whenever they are saved, from any editor, on any OS.",
+  "type": "module",
+  "bin": {
+    "postjson-watch": "bin/cli.js"
+  },
+  "exports": {
+    "./http": "./src/http.js",
+    "./config": "./src/config.js"
+  },
+  "scripts": {
+    "start": "node bin/cli.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "chokidar": "^4.0.0"
+  },
+  "license": "MIT"
+}
