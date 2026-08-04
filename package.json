@@ -1,6 +1,6 @@
 {
   "name": "postjson-watch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Watch a directory tree and POST .json files as their raw contents whenever they are saved, from any editor, on any OS.",
   "type": "module",
   "bin": {
