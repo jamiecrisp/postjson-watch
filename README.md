@@ -14,7 +14,19 @@ Sublime, or `echo > file.json`.
 is editor-independent: start the process, point it at a folder, and any `.json`
 saved under that folder gets posted — no plugin, no editor API.
 
-## Install
+## Quick start (if you already have Node.js)
+
+The package is on npm, so you can run it without downloading anything:
+
+```bash
+npx postjson-watch . --url http://localhost:8000/api/upload
+```
+
+That watches the current folder and posts every `.json` you save to that URL.
+Press `Ctrl+C` to stop. Never used Node or a terminal? Follow the full
+walkthrough below.
+
+## Full install (from scratch)
 
 This tool runs on **Node.js** (a program for running JavaScript outside a
 browser). If you've never used Node or a terminal before, follow every step
@@ -216,6 +228,11 @@ The bundled [`postjson.config.json`](postjson.config.json) is found by rule 3
 whenever you run from inside the project folder. A second copy showing every
 option lives in
 [`postjson.config.example.json`](postjson.config.example.json).
+
+> **Keeping private URLs out of git.** The bundled config is committed, so don't
+> put internal endpoints in it. Instead copy it to `postjson.config.local.json`
+> (already git-ignored), put your real URLs there, and point the tool at it with
+> `--config postjson.config.local.json`.
 
 ## What gets posted
 

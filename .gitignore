@@ -1,3 +1,6 @@
 node_modules/
 *.log
 .DS_Store
+
+# Local config overrides — keep your real URLs out of git.
+postjson.config.local.json

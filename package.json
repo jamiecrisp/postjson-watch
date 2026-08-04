@@ -10,6 +10,13 @@
     "./http": "./src/http.js",
     "./config": "./src/config.js"
   },
+  "files": [
+    "bin/",
+    "src/",
+    "postjson.config.example.json",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "start": "node bin/cli.js",
     "test": "node --test"
@@ -17,6 +24,25 @@
   "engines": {
     "node": ">=20"
   },
+  "keywords": [
+    "watch",
+    "file-watcher",
+    "json",
+    "post",
+    "http",
+    "on-save",
+    "webhook",
+    "cli"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamiecrisp/postjson-watch.git"
+  },
+  "homepage": "https://github.com/jamiecrisp/postjson-watch#readme",
+  "bugs": {
+    "url": "https://github.com/jamiecrisp/postjson-watch/issues"
+  },
+  "author": "jamiecrisp",
   "dependencies": {
     "chokidar": "^4.0.0"
   },
