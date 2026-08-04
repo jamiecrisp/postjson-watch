@@ -64,14 +64,9 @@ below. You don't need to install those separately.
 There are two ways to download the code. **Pick one.** Option A needs no extra
 tools; Option B uses git if you have it (or don't mind installing it).
 
-> The repository is **private** either way. You must be **signed in to GitHub
-> with an account that has access** to download it. If you don't have access,
-> ask the repository owner to add you.
-
 #### Option A — Download a ZIP (no git needed)
 
-1. Sign in to GitHub, then open
-   **<https://github.com/jamiecrisp/postjson-watch>** in your browser.
+1. Open **<https://github.com/jamiecrisp/postjson-watch>** in your browser.
 2. Click the green **`< > Code`** button, then **Download ZIP**.
    (Direct link: <https://github.com/jamiecrisp/postjson-watch/archive/refs/heads/main.zip>)
 3. **Unzip** the downloaded file:
@@ -99,8 +94,6 @@ missing, install it from <https://git-scm.com/downloads> (or, on macOS, running
 git clone https://github.com/jamiecrisp/postjson-watch.git
 cd postjson-watch
 ```
-
-git will ask you to sign in to GitHub the first time.
 
 #### Install the dependencies
 
