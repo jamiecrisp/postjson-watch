@@ -14,30 +14,125 @@ Sublime, or `echo > file.json`.
 is editor-independent: start the process, point it at a folder, and any `.json`
 saved under that folder gets posted — no plugin, no editor API.
 
-## Requirements
-
-- Node.js **>= 20** (uses built-in `fetch` and `AbortSignal.timeout`).
-  Developed and verified on Node 22.
-
 ## Install
 
-```bash
-# one-off, no install:
-npx postjson-watch <dir>
+This tool runs on **Node.js** (a program for running JavaScript outside a
+browser). If you've never used Node or a terminal before, follow every step
+below in order — you only do the setup once.
 
-# or install globally for a persistent `postjson-watch` command:
-npm install -g postjson-watch
+Everything happens in a **terminal** (a text window where you type commands):
+
+- **macOS** — open **Terminal** (press `Cmd+Space`, type "Terminal", hit Enter).
+- **Windows** — open **PowerShell** (press the Start button, type "PowerShell",
+  hit Enter).
+- **Linux** — open your terminal app (often `Ctrl+Alt+T`).
+
+Throughout, "run a command" means type it into that window and press Enter.
+
+### Step 1 — Install Node.js (version 20 or newer)
+
+First check whether you already have it. Run:
+
+```bash
+node --version
 ```
 
-npm creates the right launcher on every platform (a shim on Windows, a symlink
-on macOS/Linux), so `postjson-watch` just works everywhere.
+If that prints something like `v20.x.x` or `v22.x.x`, you're done — skip to
+Step 2. If it says "command not found" (or a version below 20), install it:
+
+- **macOS / Windows** — go to **<https://nodejs.org>**, download the **LTS**
+  installer, open it, and click through with the default options. When it
+  finishes, **close and reopen your terminal**, then run `node --version` again
+  to confirm.
+
+- **Linux (Debian/Ubuntu)** — the version in the default package manager is
+  often too old. Install a current one with:
+
+  ```bash
+  curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+  sudo apt-get install -y nodejs
+  ```
+
+  (Other distributions: install the `nodejs` package version 20+ from your
+  package manager, or use [nvm](https://github.com/nvm-sh/nvm).)
+
+Installing Node also installs **npm** and **npx**, two helper commands used
+below. You don't need to install those separately.
+
+### Step 2 — Get postjson-watch
+
+You need [git](https://git-scm.com) to download the code. Check with
+`git --version`; if it's missing, install it from <https://git-scm.com/downloads>
+(or, on macOS, running `git --version` once will offer to install it for you).
+
+Then clone the repository and install its dependencies:
+
+```bash
+git clone https://github.com/jamiecrisp/postjson-watch.git
+cd postjson-watch
+npm install
+```
+
+`npm install` downloads the one library the tool needs. It creates a
+`node_modules` folder — that's normal, and you never edit it.
+
+> The repository is **private**. To clone it, your GitHub account must have
+> access, and git will ask you to sign in the first time. If you don't have
+> access, ask the repository owner to add you.
+
+### Step 3 — Run it
+
+From inside the `postjson-watch` folder, run the tool with `node`:
+
+```bash
+node bin/cli.js --help
+```
+
+If you see the help text, everything works. See **Usage** below for real
+commands. Whenever you run it, either be inside the `postjson-watch` folder and
+use `node bin/cli.js …`, or use the full path
+`node /path/to/postjson-watch/bin/cli.js …`.
+
+#### Optional: a shorter `postjson-watch` command
+
+If you'd like to type `postjson-watch` from anywhere instead of
+`node bin/cli.js`, run this once from inside the folder:
+
+```bash
+npm install -g .
+```
+
+After that, `postjson-watch --help` works in any directory. (On some systems the
+global install needs elevated permissions — if it fails with a permissions
+error, either prefix it with `sudo` on macOS/Linux, or just keep using
+`node bin/cli.js`, which needs no special setup.)
+
+### Requirements at a glance
+
+- **Node.js 20 or newer** (uses built-in `fetch` and `AbortSignal.timeout`;
+  developed and verified on Node 22).
+- **git**, to download the code.
 
 ## Usage
+
+> The examples below write `postjson-watch`, which works if you did the optional
+> global install in Step 3. If you didn't, replace `postjson-watch` with
+> `node bin/cli.js` (run from inside the `postjson-watch` folder) — everything
+> else is identical.
 
 ```bash
 postjson-watch [dir] [options]        # watch a directory tree
 postjson-watch --once <file>          # post one file and exit
 ```
+
+A complete first run, watching the current folder and posting to a local server:
+
+```bash
+postjson-watch . --url http://localhost:8000/api/upload
+```
+
+Leave it running; every `.json` you save under that folder is posted. Press
+`Ctrl+C` to stop.
 
 | Option | Meaning |
 |--------|---------|
