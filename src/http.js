@@ -1,21 +1,21 @@
 // The HTTP layer: post a body to a single URL and classify the outcome.
 //
-// The Sublime plugin got its "server answered vs. no answer" distinction for
-// free from Python's urllib exception hierarchy. fetch's error model is shaped
-// differently: a non-2xx response RESOLVES (with res.ok === false), while a
-// genuine network failure REJECTS with a TypeError whose real cause is on
-// err.cause. We reconstruct the distinction by inspecting err.name and
+// We distinguish "the server answered with an error" from "there was no answer
+// at all" because they mean different things (a bad status is a real failure; an
+// unreachable host may just be an offline VPN endpoint). fetch's error model
+// makes this non-obvious: a non-2xx response RESOLVES (with res.ok === false),
+// while a genuine network failure REJECTS with a TypeError whose real cause is
+// on err.cause. We recover the distinction by inspecting err.name and
 // err.cause.code.
 //
-// Unlike the plugin, we do not route outcomes to "loud" vs "silent" channels —
-// every result is printed uniformly by the caller. Classification here exists
-// only to compose a readable message.
+// Every result is printed uniformly by the caller — there is no "loud" vs
+// "silent" routing here. Classification exists only to compose a readable line.
 
 const DEFAULT_TIMEOUT_MS = 10000;
 
 // Map a structured error code (or, as a fallback, a raw message) to a short
-// human phrase. Ported from the plugin's plain_reason, but driven off
-// err.cause.code, which is far more reliable than parsing message text.
+// human phrase. Driven off err.cause.code, which is far more reliable than
+// parsing message text.
 export function plainReason(code, fallbackMessage = "") {
   switch (code) {
     case "ECONNREFUSED":
@@ -56,8 +56,8 @@ export function plainReason(code, fallbackMessage = "") {
     return "invalid URL";
   }
 
-  // Last resort: fall back to fuzzy message matching, the way the plugin did,
-  // so exotic causes still read reasonably.
+  // Last resort: fall back to fuzzy message matching so exotic causes that
+  // carry no recognizable code still read reasonably.
   const text = String(fallbackMessage).toLowerCase();
   if (text.includes("timed out") || text.includes("timeout")) return "timed out";
   if (text.includes("refused")) return "refused the connection";
@@ -106,8 +106,8 @@ export function classifyRejection(err) {
 // Never throws.
 export async function send(url, body, opts = {}) {
   const timeoutMs = opts.timeoutMs ?? DEFAULT_TIMEOUT_MS;
-  // Content-Type is always forced to application/json (plugin parity); any
-  // configured headers layer on top, but cannot override the content type.
+  // Content-Type is always forced to application/json; any configured headers
+  // layer on top, but cannot override the content type.
   const headers = {
     "Csrf-token": "nocheck",
     ...(opts.headers || {}),

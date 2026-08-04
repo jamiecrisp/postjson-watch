@@ -6,8 +6,8 @@ import os from "node:os";
 
 const CONFIG_NAME = "postjson.config.json";
 
-// The user-level config directory, analogous to the plugin's global
-// PostFileAsJson.sublime-settings.
+// The user-level config directory, used as the global fallback when no config
+// is found nearer the working directory.
 function userConfigPath() {
   if (process.platform === "win32") {
     const appData = process.env.APPDATA || path.join(os.homedir(), "AppData", "Roaming");
@@ -92,7 +92,7 @@ export function loadConfig(configPath) {
   };
 }
 
-// Resolve the effective URL list. Ported from the plugin's get_urls:
+// Resolve the effective URL list:
 // CLI urls win; else post_urls (a bare string is coerced to one element);
 // else the singular post_url. Empty entries are dropped, order preserved.
 export function normalizeUrls(cfg = {}, cliUrls = []) {
@@ -104,8 +104,8 @@ export function normalizeUrls(cfg = {}, cliUrls = []) {
   if (typeof urls === "string") urls = [urls];
   if (Array.isArray(urls)) {
     const filtered = urls.filter(Boolean);
-    // An empty (or all-empty) post_urls falls through to post_url, matching the
-    // plugin where [] is falsy in Python and get_urls drops to the singular key.
+    // An empty (or all-empty) post_urls falls through to the singular post_url,
+    // so an accidentally-blank list doesn't silently disable posting.
     if (filtered.length) return filtered;
   }
 

@@ -1,18 +1,12 @@
 # postjson-watch
 
-Watch a directory tree and **POST every `.json` file's contents** to one or more
-URLs whenever it's saved — from **any** editor, on **any** OS.
+Watch a directory tree and, **whenever you save a `.json` file, POST that file's
+contents** to one or more URLs — from **any** editor, on **any** OS.
 
-This is the editor-agnostic successor to a Sublime Text plugin that did the same
-thing only inside Sublime. Instead of hooking an editor, it watches the
-filesystem, so it works the same whether you save from VS Code, Vim, JetBrains,
-Sublime, or `echo > file.json`.
+Each save sends only the file that was just saved, not the whole tree. Run it,
+point it at a folder, and every subsequent save of a `.json` file under that
+folder is posted to your endpoint(s).
 
-## Why a watcher
-
-"Post on save" inside an editor only works in that editor. A filesystem watcher
-is editor-independent: start the process, point it at a folder, and any `.json`
-saved under that folder gets posted — no plugin, no editor API.
 
 ## Quick start (if you already have Node.js)
 
@@ -22,9 +16,9 @@ The package is on npm, so you can run it without downloading anything:
 npx postjson-watch . --url http://localhost:8000/api/upload
 ```
 
-That watches the current folder and posts every `.json` you save to that URL.
-Press `Ctrl+C` to stop. Never used Node or a terminal? Follow the full
-walkthrough below.
+That watches the current folder; each time you save a `.json` file under it,
+that file is posted to the URL. Press `Ctrl+C` to stop. Never used Node or a
+terminal? Follow the full walkthrough below.
 
 ## Full install (from scratch)
 
@@ -163,8 +157,8 @@ A complete first run, watching the current folder and posting to a local server:
 node bin/cli.js . --url http://localhost:8000/api/upload
 ```
 
-Leave it running; every `.json` you save under that folder is posted. Press
-`Ctrl+C` to stop.
+Leave it running; each `.json` file you save under that folder is posted (just
+that file). Press `Ctrl+C` to stop.
 
 | Option | Meaning |
 |--------|---------|
@@ -236,13 +230,16 @@ option lives in
 
 ## What gets posted
 
+- **Saving one file posts that one file** — the file you just saved, not the
+  rest of the tree. The watched directory only determines *which* files are
+  watched.
 - **Only `.json` files** (case-insensitive) trigger a post. Other file types
   under the watched tree are ignored.
 - The request body is the file's **raw bytes**, sent as-is. (The
   `application/json` header is sent regardless — the file is expected to contain
   JSON, but its contents are not re-serialized or validated.)
-- Newly created files, including in newly created subdirectories, are picked up
-  automatically.
+- Newly created `.json` files, including in newly created subdirectories, are
+  picked up automatically.
 
 ## Output
 

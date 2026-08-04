@@ -152,8 +152,8 @@ async function runWatch(opts) {
     process.exit(2);
   }
 
-  // Banner — echoes the plugin's URLs: line so a misconfigured URL count is
-  // obvious immediately (the plugin's most common source of confusion).
+  // Banner — printing the resolved URL count up front makes a misconfigured
+  // config (e.g. a URL that isn't being read) obvious immediately.
   console.log(`postjson-watch — watching ${opts.watch}`);
   console.log(`  ${opts.urls.length} URL(s), ${opts.timeoutMs}ms timeout:`);
   for (const u of opts.urls) console.log(`    · ${u}`);

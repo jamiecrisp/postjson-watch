@@ -2,9 +2,8 @@
 //
 // Reporting is deliberately uniform: success, HTTP error, TLS error and
 // unreachable endpoints all print the same way (a "✓" or "✗" line per URL).
-// The Sublime plugin's loud-dialog/silent-status-bar split existed only to
-// avoid a modal popup; a terminal has no modal to suppress, so there is nothing
-// to route around.
+// A terminal has no modal dialogs to suppress, so there is no reason to route
+// some outcomes differently from others.
 
 import { send } from "./http.js";
 
