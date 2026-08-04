@@ -61,24 +61,63 @@ below. You don't need to install those separately.
 
 ### Step 2 — Get postjson-watch
 
-You need [git](https://git-scm.com) to download the code. Check with
-`git --version`; if it's missing, install it from <https://git-scm.com/downloads>
-(or, on macOS, running `git --version` once will offer to install it for you).
+There are two ways to download the code. **Pick one.** Option A needs no extra
+tools; Option B uses git if you have it (or don't mind installing it).
 
-Then clone the repository and install its dependencies:
+> The repository is **private** either way. You must be **signed in to GitHub
+> with an account that has access** to download it. If you don't have access,
+> ask the repository owner to add you.
+
+#### Option A — Download a ZIP (no git needed)
+
+1. Sign in to GitHub, then open
+   **<https://github.com/jamiecrisp/postjson-watch>** in your browser.
+2. Click the green **`< > Code`** button, then **Download ZIP**.
+   (Direct link: <https://github.com/jamiecrisp/postjson-watch/archive/refs/heads/main.zip>)
+3. **Unzip** the downloaded file:
+   - **macOS** — double-click the `.zip` in Finder.
+   - **Windows** — right-click the `.zip` → **Extract All…**.
+   - **Linux** — double-click it, or run `unzip postjson-watch-main.zip`.
+4. You'll get a folder named **`postjson-watch-main`**. In your terminal, move
+   into it — the easiest way is to type `cd ` (with a trailing space) and then
+   **drag the folder from your file manager onto the terminal window**, which
+   pastes its path, then press Enter. For example:
+
+   ```bash
+   cd ~/Downloads/postjson-watch-main
+   ```
+
+Then continue to "**Install the dependencies**" below.
+
+#### Option B — Clone with git
+
+Requires [git](https://git-scm.com). Check with `git --version`; if it's
+missing, install it from <https://git-scm.com/downloads> (or, on macOS, running
+`git --version` once will offer to install it for you).
 
 ```bash
 git clone https://github.com/jamiecrisp/postjson-watch.git
 cd postjson-watch
+```
+
+git will ask you to sign in to GitHub the first time.
+
+#### Install the dependencies
+
+Whichever option you used, you should now be **inside the project folder** in
+your terminal. Run:
+
+```bash
 npm install
 ```
 
-`npm install` downloads the one library the tool needs. It creates a
-`node_modules` folder — that's normal, and you never edit it.
+This downloads the one library the tool needs and creates a `node_modules`
+folder — that's normal, and you never edit it.
 
-> The repository is **private**. To clone it, your GitHub account must have
-> access, and git will ask you to sign in the first time. If you don't have
-> access, ask the repository owner to add you.
+> **Note for ZIP users:** the folder is named `postjson-watch-main` (not
+> `postjson-watch`), and updating later means downloading a fresh ZIP and
+> running `npm install` again. With git (Option B) you can update in place with
+> `git pull`. Everything else works identically.
 
 ### Step 3 — Run it
 
