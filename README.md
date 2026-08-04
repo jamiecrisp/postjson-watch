@@ -17,8 +17,20 @@ npx postjson-watch . --url http://localhost:8000/api/upload
 ```
 
 That watches the current folder; each time you save a `.json` file under it,
-that file is posted to the URL. Press `Ctrl+C` to stop. Never used Node or a
-terminal? Follow the full walkthrough below.
+that file is posted to the URL. Press `Ctrl+C` to stop.
+
+To post to **more than one endpoint**, repeat `--url` — each saved file is sent
+to all of them:
+
+```bash
+npx postjson-watch . \
+  --url http://localhost:8000/api/upload \
+  --url https://staging.example.com/api/upload
+```
+
+An endpoint that can't be reached (say, one behind a VPN that's off) just logs a
+failure line for that URL; the others still receive the file. Never used Node or
+a terminal? Follow the full walkthrough below.
 
 ## Full install (from scratch)
 
