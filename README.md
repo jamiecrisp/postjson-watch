@@ -114,53 +114,41 @@ folder — that's normal, and you never edit it.
 
 ### Step 3 — Run it
 
-From inside the `postjson-watch` folder, run the tool with `node`:
+You run the tool from **inside the project folder** with `node bin/cli.js`.
+Confirm it works:
 
 ```bash
 node bin/cli.js --help
 ```
 
-If you see the help text, everything works. See **Usage** below for real
-commands. Whenever you run it, either be inside the `postjson-watch` folder and
-use `node bin/cli.js …`, or use the full path
-`node /path/to/postjson-watch/bin/cli.js …`.
+If you see the help text, everything is set up. That's it — there's nothing to
+install globally. Every time you use the tool, open a terminal, `cd` into the
+project folder, and run `node bin/cli.js …`.
 
-#### Optional: a shorter `postjson-watch` command
-
-If you'd like to type `postjson-watch` from anywhere instead of
-`node bin/cli.js`, run this once from inside the folder:
-
-```bash
-npm install -g .
-```
-
-After that, `postjson-watch --help` works in any directory. (On some systems the
-global install needs elevated permissions — if it fails with a permissions
-error, either prefix it with `sudo` on macOS/Linux, or just keep using
-`node bin/cli.js`, which needs no special setup.)
+> **Tip:** if you'd rather not `cd` in each time, you can run it from anywhere by
+> giving the full path, e.g.
+> `node /path/to/postjson-watch/bin/cli.js …`.
 
 ### Requirements at a glance
 
 - **Node.js 20 or newer** (uses built-in `fetch` and `AbortSignal.timeout`;
   developed and verified on Node 22).
-- **git**, to download the code.
+- To download the code: nothing extra for the ZIP option; **git** for the clone
+  option.
 
 ## Usage
 
-> The examples below write `postjson-watch`, which works if you did the optional
-> global install in Step 3. If you didn't, replace `postjson-watch` with
-> `node bin/cli.js` (run from inside the `postjson-watch` folder) — everything
-> else is identical.
+Run everything with `node bin/cli.js` from inside the project folder:
 
 ```bash
-postjson-watch [dir] [options]        # watch a directory tree
-postjson-watch --once <file>          # post one file and exit
+node bin/cli.js [dir] [options]        # watch a directory tree
+node bin/cli.js --once <file>          # post one file and exit
 ```
 
 A complete first run, watching the current folder and posting to a local server:
 
 ```bash
-postjson-watch . --url http://localhost:8000/api/upload
+node bin/cli.js . --url http://localhost:8000/api/upload
 ```
 
 Leave it running; every `.json` you save under that folder is posted. Press
@@ -182,7 +170,9 @@ overrides the config's `watch`.
 
 ## Configuration
 
-Settings live in a `postjson.config.json`:
+The project already includes a ready-to-edit **`postjson.config.json`** at its
+root — you don't have to create one. Open it in any text editor, set your
+endpoint(s), and delete the `_comment` line:
 
 ```json
 {
@@ -197,6 +187,9 @@ Settings live in a `postjson.config.json`:
   "ignore": ["**/node_modules/**", "**/.git/**"]
 }
 ```
+
+With that file edited, you can just run `node bin/cli.js` (no `--url` needed) —
+it's found automatically (see discovery order below).
 
 - **`watch`** — the directory tree to watch, resolved **relative to the config
   file** (so the config is portable). A `[dir]` argument overrides it.
@@ -219,7 +212,10 @@ Settings live in a `postjson.config.json`:
 
 If none is found and no `--url` is given, it prints an error and exits.
 
-See [`postjson.config.example.json`](postjson.config.example.json).
+The bundled [`postjson.config.json`](postjson.config.json) is found by rule 3
+whenever you run from inside the project folder. A second copy showing every
+option lives in
+[`postjson.config.example.json`](postjson.config.example.json).
 
 ## What gets posted
 
@@ -258,7 +254,7 @@ the local endpoint keeps receiving saves while the VPN one simply logs
 
 ### `--once` exit codes
 
-`postjson-watch --once file.json` posts once and exits **0** if every URL
+`node bin/cli.js --once file.json` posts once and exits **0** if every URL
 succeeded, **1** if any failed. Useful in scripts and CI. (The long-running
 watcher, by contrast, never exits on a failed post.)
 

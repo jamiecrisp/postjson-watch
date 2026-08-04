@@ -1,0 +1,16 @@
+{
+  "_comment": "Edit this file: set watch to the folder to watch and post_urls to your endpoint(s). Delete this _comment line when done. See README.md for all options.",
+  "watch": ".",
+  "post_urls": [
+    "http://localhost:8000/api/upload"
+  ],
+  "timeout_ms": 10000,
+  "debounce_ms": 200,
+  "headers": {
+    "Csrf-token": "nocheck"
+  },
+  "ignore": [
+    "**/node_modules/**",
+    "**/.git/**"
+  ]
+}
