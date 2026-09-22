@@ -209,7 +209,7 @@ endpoint(s), and delete the `_comment` line:
 With that file edited, you can just run `node bin/cli.js` (no `--url` needed) —
 it's found automatically (see discovery order below).
 
-- **`watch`** — the directory tree to watch, resolved **relative to the config
+- **`watch`** — the directory tree (or a single `.json` file) to watch, resolved **relative to the config
   file** (so the config is portable). A `[dir]` argument overrides it.
 - **`post_urls`** — the list of endpoints. A bare `"post_url": "…"` string is
   also accepted; if both are present, `post_urls` wins.
@@ -252,6 +252,23 @@ option lives in
   JSON, but its contents are not re-serialized or validated.)
 - Newly created `.json` files, including in newly created subdirectories, are
   picked up automatically.
+
+### Watch a single file (avoiding git-checkout floods)
+
+`watch` (or the `[dir]` argument) can be a **single `.json` file** instead of a
+directory:
+
+```bash
+node bin/cli.js path/to/myform.json --url http://localhost:8000/api/upload
+```
+
+This is the recommended setup when you work in a shared repository. A watcher
+pointed at the whole tree can't tell your save apart from other filesystem
+changes — and a **`git checkout` rewrites many files at once**, so switching
+branches (which pulls in teammates' changes) would fire a post for every changed
+`.json`. Point the watcher only at the file you actually edit, and a checkout of
+anything else is simply not watched. (Watching a specific subfolder that only
+you change works the same way.)
 
 ## Output
 

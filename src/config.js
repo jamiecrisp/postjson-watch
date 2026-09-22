@@ -150,7 +150,14 @@ export function validateForWatch(opts) {
   } catch {
     throw new Error(`Watch path does not exist: ${opts.watch}`);
   }
-  if (!stat.isDirectory()) {
-    throw new Error(`Watch path is not a directory: ${opts.watch}`);
+  // A directory (watched recursively) or a single file are both valid. Watching
+  // one file is the way to avoid a git checkout — which rewrites many files at
+  // once — triggering a burst of posts: point the watcher only at the file you
+  // actually edit.
+  if (!stat.isDirectory() && !stat.isFile()) {
+    throw new Error(`Watch path is neither a file nor a directory: ${opts.watch}`);
+  }
+  if (stat.isFile() && !opts.watch.toLowerCase().endsWith(".json")) {
+    throw new Error(`Watch path is a file but not a .json file: ${opts.watch}`);
   }
 }

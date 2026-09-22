@@ -160,8 +160,11 @@ async function runWatch(opts) {
   if (opts.dryRun) console.log("  (dry run — nothing will actually be posted)");
   console.log("  Ctrl-C to stop.\n");
 
+  // Label saves relative to the watch root. When the root is a single file,
+  // relative(file, file) is "", so use the file's own name instead.
   const onSaved = async (absPath, contents) => {
-    console.log(`saved ${path.relative(opts.watch, absPath) || absPath}`);
+    const label = path.relative(opts.watch, absPath) || path.basename(absPath);
+    console.log(`saved ${label}`);
     await postToUrls(opts.urls, contents, opts);
   };
 
