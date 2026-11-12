@@ -258,21 +258,26 @@ option lives in
 
 If some of your endpoints are only reachable through a local proxy (for example
 one that tunnels certain hosts over a VPN), put the real `https://` URLs in your
-config as usual and route them with the standard proxy environment variables:
+config as usual and route them with the standard proxy environment variables —
+**plus `NODE_USE_ENV_PROXY=1`, which is required to turn proxy support on:**
 
 ```bash
+export NODE_USE_ENV_PROXY=1                # REQUIRED — without it, see below
 export HTTPS_PROXY=http://localhost:8080   # your local proxy
 export HTTP_PROXY=http://localhost:8080
 export NO_PROXY=localhost,127.0.0.1        # don't proxy local endpoints
-node bin/cli.js . 
+node bin/cli.js .
 ```
 
-> **Requires Node.js 24 or newer.** `fetch` only honours these environment
-> variables automatically from Node 24 on. On Node 20–23 the variables are
-> **silently ignored** and requests go direct — a proxied endpoint will then
-> look unreachable. Check your version with `node --version`; if it's below 24,
-> upgrade (see [Step 1](#step-1--install-nodejs-version-20-or-newer)) before
-> relying on a proxy.
+> **The `NODE_USE_ENV_PROXY=1` flag is the part people miss.** Node's `fetch`
+> does **not** read `HTTP_PROXY`/`HTTPS_PROXY` on its own — even on the newest
+> Node. You must also set `NODE_USE_ENV_PROXY=1`. With the proxy vars set but
+> this flag missing, requests go **direct**, so a proxied/VPN-only endpoint
+> fails with `ENOTFOUND` (or a timeout) exactly as if the proxy weren't there.
+>
+> **Requires Node.js 24 or newer.** The flag only exists from Node 24 on; on
+> Node 20–23 it does nothing. Check with `node --version`, and upgrade if needed
+> (see [Step 1](#step-1--install-nodejs-version-20-or-newer)).
 
 Set **`NO_PROXY`** whenever you also post to a local endpoint (such as
 `http://localhost:8000`) — without it, those local posts would be sent through
