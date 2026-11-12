@@ -150,7 +150,8 @@ project folder, and run `node bin/cli.js …`.
 ### Requirements at a glance
 
 - **Node.js 20 or newer** (uses built-in `fetch` and `AbortSignal.timeout`;
-  developed and verified on Node 22).
+  developed and verified on Node 22). **Node 24+** is required only if you route
+  posts through a proxy — see [Posting through a proxy or VPN](#posting-through-a-proxy-or-vpn).
 - To download the code: nothing extra for the ZIP option; **git** for the clone
   option.
 
@@ -252,6 +253,30 @@ option lives in
   JSON, but its contents are not re-serialized or validated.)
 - Newly created `.json` files, including in newly created subdirectories, are
   picked up automatically.
+
+### Posting through a proxy or VPN
+
+If some of your endpoints are only reachable through a local proxy (for example
+one that tunnels certain hosts over a VPN), put the real `https://` URLs in your
+config as usual and route them with the standard proxy environment variables:
+
+```bash
+export HTTPS_PROXY=http://localhost:8080   # your local proxy
+export HTTP_PROXY=http://localhost:8080
+export NO_PROXY=localhost,127.0.0.1        # don't proxy local endpoints
+node bin/cli.js . 
+```
+
+> **Requires Node.js 24 or newer.** `fetch` only honours these environment
+> variables automatically from Node 24 on. On Node 20–23 the variables are
+> **silently ignored** and requests go direct — a proxied endpoint will then
+> look unreachable. Check your version with `node --version`; if it's below 24,
+> upgrade (see [Step 1](#step-1--install-nodejs-version-20-or-newer)) before
+> relying on a proxy.
+
+Set **`NO_PROXY`** whenever you also post to a local endpoint (such as
+`http://localhost:8000`) — without it, those local posts would be sent through
+the proxy too.
 
 ### Watch a single file (avoiding git-checkout floods)
 
